@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,16 +6,74 @@ namespace archhero
 {
     public class PlayerController : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+        //Define a moving speed MoveSpeed ​​whose type is public type
+        public float MoveSpeed = 3f;
+        //Users can adjust it in the PlayerMove script interface
+        //(Defined by public, it can be modified outside the script, and mainly modified outside the script)
+        //(If it is a private type, it can only be modified in the script)
 
-        // Update is called once per frame
+        //Define two private types of floating-point data horizontal and vertical to record A, D keys and
+        //The data of the W and S keys can also be understood as recording the data of the horizontal axis and the vertical axis, that is, the X axis and the Y axis 
+        private float horizontal;
+        private float vertical;
+
+        //Define a gravity gravity 
+        private float gravity = 9.8f;
+        //Define a takeoff speed
+        public float JumpSpeed = 15f;
+        //Define a public type CharacterController and name it PlayerController
+        // used to instantiate the object
+        public CharacterController playerController;
+
+        //Define a Vector3
+        //Vector3 vector can be used to represent both position and direction
+        //In the three-dimensional coordinate system, three unit vectors i, j, and k in the same direction as the x-axis, y-axis, and z-axis are taken as a set of bases.
+        //If a is any vector in the coordinate system, take the coordinate origin O as the starting point to make the vector OP=a. According to the Fundamental Theorem of Space, there is one and only one set of real numbers (x, y, z)
+        //Make a=vector OP=xi+yj+zk, so the real pair (x, y, z) is called the coordinate of vector a
+        //Denoted as a=(x, y, z). This is the coordinate representation of the vector a. Where (x, y, z) is the coordinate of point P. The vector OP is called the position vector of the point P.
+        Vector3 Player_Move;
+        //If you still don't understand, you can go to the detailed understanding, I won't explain too much here
+        private void Awake()
+        {
+            playerController = GetComponent<CharacterController>();
+        }
+        //Every frame in Updata will be executed, resulting in the inability to save the value of the previous moment   
         void Update()
         {
-        
+            //Determine whether the PlayerController is on the ground, if it is not on the ground, it cannot move forward, backward, left and right, nor can it take off
+            if (playerController.isGrounded)
+            {
+                //Input.GetAxis(&quot;Horizontal&quot;) is to get the value of the X (horizontal axis) axis direction to horizontal
+                horizontal = Input.GetAxis("Horizontal");
+                //Input.GetAxis(&quot;Vertical&quot;) is to get the value of the Z (vertical axis) axis direction to Vertical
+                vertical = Input.GetAxis("Vertical");
+
+                //transform is the location of the object, forward is a forward component
+                //transform.forward * vertical is the forward direction of the object multiplied by the value of the Z axis obtained, that is, the amount the object moves forward, if the vertical is negative, the object moves back
+                //transform.right * horizontal is the direction of the object to the right multiplied by the value of the obtained X-axis, that is, the amount the object moves to the right, if the horizon is negative, the object is to the left
+                //After the two are added, the last face is multiplied by the number of degrees of movement, and the Player_Move assigned to the Vector3 type is the direction of the actual movement of the object           
+                Player_Move = (transform.forward * vertical + transform.right * horizontal) * MoveSpeed;
+
+                // Determine if the player pressed the space bar
+                if (Input.GetAxis("Jump") == 1)
+                {
+                    //Press the space bar to add an upward number of degrees to its vertical direction to make it jump up
+                    //Player_Move.y is equivalent to Vector3(0,1,0) under Player_Move
+
+                    //Player_Move.y = Player_Move.y + JumpSpeed;
+                }
+            }
+
+            //Simulate the effect of gravity drop, let the upward amount minus the amount of gravity drop
+            //The variable deltaTime is represented as a unity local variable, which is updated in each frame as the data in the Time class. In each frame, this variable displays the time value (calculated in seconds) that has elapsed since the previous frame. 
+            //The advantages of this variable: Using this function, it will be independent of your game frame rate. The code placed in the Update() function is executed in frames
+            //We need to multiply the moving object by seconds to execute, and multiply by deltaTime to achieve 
+            //Example: If you want a game object to move forward at 10m per second, multiply your speed by 10 Time.deltaTime It means that the distance moved per second is 10m instead of 10m per frame      
+            Player_Move.y = Player_Move.y - gravity * Time.deltaTime;
+
+            //.Move under PlayerController is the function to realize object movement
+            //Move() put a Vector3 type in the brackets, in this case Player_Move
+            playerController.Move(Player_Move * Time.deltaTime);
         }
     }
 }
