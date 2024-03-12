@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,24 +8,35 @@ namespace archhero
 {
     public class GunEnemy : Gun
     {
-
         public bool agresion = false;
-
-        private float delayShoot = 1f;
+        public float delayShoot = 1f;
 
         private void Awake()
         {
-            
+            StartCoroutine(ShootCoroutine());
         }
-        private  void Update()
+
+        public void SetAgresion(bool value)
         {
-            if (agresion)
+            agresion = value;
+        }
+
+        IEnumerator ShootCoroutine()
+        {
+            while (true)
             {
-              Invoke("Shoot",delayShoot);
+                if (agresion)
+                {
+                    Debug.Log("x");
+                    Shoot();
+                    // «десь должен быть ваш код дл€ выстрела
+                    yield return new WaitForSeconds(delayShoot);
+                }
+                else
+                {
+                    yield return null; // ∆дем следующего кадра, если агресси€ отключена
+                }
             }
         }
-
-
-        
     }
 }
