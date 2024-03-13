@@ -1,14 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace archhero
 {
-    public class Gun : MonoBehaviour
+
+    public abstract class Gun : MonoBehaviour, IShootable, ISetAgres
     {
+        [SerializeField]
+        protected float delayShoot = 2f;
+
+        protected  bool agresion = false;
+
         public GameObject bulletPrefab;
         public AudioSource shootSound;
- 
+
+        public  void SetAgresion(bool value)
+        {
+            agresion = value;
+        }
+
+        public  void Awake()
+        {
+            StartCoroutine(ShootCoroutine());
+        }
+
 
         public void Shoot()
         {
@@ -19,5 +37,28 @@ namespace archhero
             // Play shooting sound
             shootSound.Play();
         }
+
+
+        protected IEnumerator ShootCoroutine()
+        {
+            while (true)
+            {
+                if (agresion)
+                {
+                    Debug.Log("GunPlayer");
+                    Shoot();
+
+                    // «десь должен быть ваш код дл€ выстрела
+                    yield return new WaitForSeconds(delayShoot);
+                }
+                else
+                {
+                    yield return null; // ∆дем следующего кадра, если агресси€ отключена
+                }
+            }
+        }
+
     }
+
+    
 }

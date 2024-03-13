@@ -3,20 +3,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
 namespace archhero
 {
     public class GunPlayer : Gun
     {
-         
 
-      private  void Update()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Shoot();
-            }
-        }
+        //[SerializeField]
+        //private float delayShoot = 2f;
 
-        
+
+        //public override void Awake()
+        //{
+        //    StartCoroutine(ShootCoroutine());
+        //}
+
+        //public override void SetAgresion(bool value)
+        //{
+        //    agresion = value;
+        //}
+
+        //IEnumerator ShootCoroutine()
+        //{
+        //    while (true)
+        //    {
+        //        if (agresion)
+        //        {
+        //            Debug.Log("GunPlayer");
+        //            Shoot();
+
+        //            // «десь должен быть ваш код дл€ выстрела
+        //            yield return new WaitForSeconds(delayShoot);
+        //        }
+        //        else
+        //        {
+        //            yield return null; // ∆дем следующего кадра, если агресси€ отключена
+        //        }
+        //    }
+        //}
+       
     }
+
+
 }
