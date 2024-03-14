@@ -25,7 +25,7 @@ namespace archhero
         {
             while (true)
             {
-                if (agresion)
+                if (aggression)
                 {
                     Debug.Log("GunEnemy");
                     Shoot();

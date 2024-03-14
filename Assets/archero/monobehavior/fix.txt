@@ -6,7 +6,7 @@ namespace archhero
 {
     public class EnemyLocator : MonoBehaviour
     {
-       [SerializeField] private GunEnemy gun;
+       [SerializeField] private Gun gun;
        [SerializeField] private Transform enemyTransform;
 
        [SerializeField] private Transform playerTransform;
@@ -72,18 +72,32 @@ namespace archhero
         }
     }
 }
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace archhero
 {
-    public class Gun : MonoBehaviour
+
+    public abstract class Gun : MonoBehaviour, IShootable, ISetAgres
     {
+        [SerializeField]
+        protected float delayShoot = 2f;
+
+        protected  bool agresion = false;
+
         public GameObject bulletPrefab;
+
         public AudioSource shootSound;
 
-        //private void Awake()
+        public  void SetAgresion(bool value)
+        {
+            agresion = value;
+        }
+
+        //public  void Awake()
         //{
         //    StartCoroutine(ShootCoroutine());
         //}
@@ -98,6 +112,27 @@ namespace archhero
             // Play shooting sound
             shootSound.Play();
         }
+
+
+        //protected virtual IEnumerator ShootCoroutine()
+        //{
+        //    while (true)
+        //    {
+        //        if (agresion)
+        //        {
+        //            Debug.Log("Gun");
+        //            Shoot();
+
+        //            // ����� ������ ���� ��� ��� ��� ��������
+        //            yield return new WaitForSeconds(delayShoot);
+        //        }
+        //        else
+        //        {
+        //            yield return null; // ���� ���������� �����, ���� �������� ���������
+        //        }
+        //    }
+        //}
+
     }
 
     
@@ -112,18 +147,18 @@ namespace archhero
 {
     public class GunEnemy : Gun
     {
-        public bool agresion = false;
-        public float delayShoot = 1f;
+
+        //public float delayShoot = 1f;
 
         private void Awake()
         {
             StartCoroutine(ShootCoroutine());
         }
 
-        public void SetAgresion(bool value)
-        {
-            agresion = value;
-        }
+        //public override void SetAgresion(bool value)
+        //{
+        //    agresion = value;
+        //}
 
         IEnumerator ShootCoroutine()
         {
@@ -131,7 +166,7 @@ namespace archhero
             {
                 if (agresion)
                 {
-                    Debug.Log("x");
+                    Debug.Log("GunEnemy");
                     Shoot();
                     // ����� ������ ���� ��� ��� ��� ��������
                     yield return new WaitForSeconds(delayShoot);
@@ -155,26 +190,26 @@ namespace archhero
 {
     public class GunPlayer : Gun
     {
-        public bool agresion = false;
-        [SerializeField]
-        private float delayShoot = 2f;
+        public PlayerController pl;
+        //[SerializeField]
+        //private float delayShoot = 2f;
 
 
-        private void Awake()
+        public   void Awake()
         {
             StartCoroutine(ShootCoroutine());
         }
 
-        public void SetAgresion(bool value)
-        {
-            agresion = value;
-        }
+        //public override void SetAgresion(bool value)
+        //{
+        //    agresion = value;
+        //}
 
-        IEnumerator ShootCoroutine()
+        private IEnumerator  ShootCoroutine()
         {
             while (true)
             {
-                if (agresion)
+                if (agresion && pl.State== CharacterState.stop)
                 {
                     Debug.Log("GunPlayer");
                     Shoot();
@@ -188,18 +223,40 @@ namespace archhero
                 }
             }
         }
-       
+
     }
 
 
-}using System.Collections;
+}namespace archhero
+{
+    interface ISetAgres
+    {
+        void SetAgresion(bool value);
+    }
+
+    
+}
+namespace archhero
+{
+    interface IShootable
+    {
+        void Shoot();
+    }
+
+    
+}
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace archhero
 {
+    public enum CharacterState { stop, walk }
+    
     public class PlayerController : MonoBehaviour
     {
+      public   CharacterState State;
+
         //Define a moving speed MoveSpeed ​​whose type is public type
         public float MoveSpeed = 3f;
         //Users can adjust it in the PlayerMove script interface
@@ -234,6 +291,8 @@ namespace archhero
         //Every frame in Updata will be executed, resulting in the inability to save the value of the previous moment   
         void Update()
         {
+
+
             //Determine whether the PlayerController is on the ground, if it is not on the ground, it cannot move forward, backward, left and right, nor can it take off
             if (playerController.isGrounded)
             {
@@ -268,12 +327,21 @@ namespace archhero
             //.Move under PlayerController is the function to realize object movement
             //Move() put a Vector3 type in the brackets, in this case Player_Move
             playerController.Move(Player_Move * Time.deltaTime);
-        }
-    }
-}using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+
+
+            if (horizontal == 0 && vertical == 0)
+            {
+                State = CharacterState.stop;
+            }
+            else
+            {
+                State = CharacterState.walk;
+            }
+        }
+
+    }
+}
  
 using System.Collections;
 using System.Collections.Generic;
@@ -283,12 +351,13 @@ namespace archhero
 {
     public class PlayerLocator : MonoBehaviour
     {
-        [SerializeField] private GunPlayer gun;
+        [SerializeField] private Gun gun;
 
         [SerializeField] private Transform playerTransform;
 
         [SerializeField] private Transform targetTransform;
 
+        
 
         private void Awake()
         {
@@ -297,10 +366,12 @@ namespace archhero
 
         private void FixedUpdate()
         {
-            //if (targetTransform != null)
-            //{
-            //    playerTransform.LookAt(targetTransform);
-            //}
+         
+
+            if (targetTransform != null)
+            {
+                playerTransform.LookAt(targetTransform);
+            }
         }
         private void OnTriggerEnter(Collider other)
         {
@@ -316,7 +387,9 @@ namespace archhero
             if (other.gameObject.CompareTag("Enemy"))
             {
                 targetTransform = null;
-                gun.SetAgresion(false);
+                
+                    gun.SetAgresion(false);
+              
             }
         }
     }

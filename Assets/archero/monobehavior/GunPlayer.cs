@@ -29,7 +29,7 @@ namespace archhero
         {
             while (true)
             {
-                if (agresion && pl.State== CharacterState.stop)
+                if (aggression && pl.State== CharacterState.stop)
                 {
                     Debug.Log("GunPlayer");
                     Shoot();

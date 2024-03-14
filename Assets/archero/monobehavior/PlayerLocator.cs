@@ -36,7 +36,7 @@ namespace archhero
             {
                 targetTransform = other.transform;
                 playerTransform.LookAt(targetTransform);
-                gun.SetAgresion(true);
+                gun.SetAggression(true);
             }
         }
         private void OnTriggerExit(Collider other)
@@ -45,7 +45,7 @@ namespace archhero
             {
                 targetTransform = null;
                 
-                    gun.SetAgresion(false);
+                    gun.SetAggression(false);
               
             }
         }
