@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace archhero
 {
+
     public class GunPlayer : Gun
     {
         public PlayerController pl;
