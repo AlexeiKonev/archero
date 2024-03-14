@@ -8,7 +8,8 @@ namespace archhero
     
     public class PlayerController : MonoBehaviour
     {
-      public   CharacterState State;
+        public VariableJoystick variableJoystick;
+        public   CharacterState State;
 
         //Define a moving speed MoveSpeed ​​whose type is public type
         public float MoveSpeed = 3f;
@@ -36,6 +37,9 @@ namespace archhero
         //Make a=vector OP=xi+yj+zk, so the real pair (x, y, z) is called the coordinate of vector a
         //Denoted as a=(x, y, z). This is the coordinate representation of the vector a. Where (x, y, z) is the coordinate of point P. The vector OP is called the position vector of the point P.
         Vector3 Player_Move;
+
+        public bool mobileGame = false;
+
         //If you still don't understand, you can go to the detailed understanding, I won't explain too much here
         private void Awake()
         {
@@ -49,11 +53,24 @@ namespace archhero
             //Determine whether the PlayerController is on the ground, if it is not on the ground, it cannot move forward, backward, left and right, nor can it take off
             if (playerController.isGrounded)
             {
-                //Input.GetAxis(&quot;Horizontal&quot;) is to get the value of the X (horizontal axis) axis direction to horizontal
-                horizontal = Input.GetAxis("Horizontal");
-                //Input.GetAxis(&quot;Vertical&quot;) is to get the value of the Z (vertical axis) axis direction to Vertical
-                vertical = Input.GetAxis("Vertical");
+                if (mobileGame)
+                {
+                    horizontal = variableJoystick.Horizontal;
+                    vertical = variableJoystick.Vertical;
+                }
+                else
+                {
+                    //Input.GetAxis(&quot;Horizontal&quot;) is to get the value of the X (horizontal axis) axis direction to horizontal
+                    horizontal = Input.GetAxis("Horizontal");
 
+
+
+                    //Input.GetAxis(&quot;Vertical&quot;) is to get the value of the Z (vertical axis) axis direction to Vertical
+                    vertical = Input.GetAxis("Vertical");
+                }
+               
+
+               
                 //transform is the location of the object, forward is a forward component
                 //transform.forward * vertical is the forward direction of the object multiplied by the value of the Z axis obtained, that is, the amount the object moves forward, if the vertical is negative, the object moves back
                 //transform.right * horizontal is the direction of the object to the right multiplied by the value of the obtained X-axis, that is, the amount the object moves to the right, if the horizon is negative, the object is to the left
