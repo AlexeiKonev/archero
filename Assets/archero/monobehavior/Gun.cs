@@ -15,6 +15,7 @@ namespace archhero
         protected  bool agresion = false;
 
         public GameObject bulletPrefab;
+
         public AudioSource shootSound;
 
         public  void SetAgresion(bool value)
@@ -22,10 +23,10 @@ namespace archhero
             agresion = value;
         }
 
-        public  void Awake()
-        {
-            StartCoroutine(ShootCoroutine());
-        }
+        //public  void Awake()
+        //{
+        //    StartCoroutine(ShootCoroutine());
+        //}
 
 
         public void Shoot()
@@ -39,24 +40,24 @@ namespace archhero
         }
 
 
-        protected IEnumerator ShootCoroutine()
-        {
-            while (true)
-            {
-                if (agresion)
-                {
-                    Debug.Log("GunPlayer");
-                    Shoot();
+        //protected virtual IEnumerator ShootCoroutine()
+        //{
+        //    while (true)
+        //    {
+        //        if (agresion)
+        //        {
+        //            Debug.Log("Gun");
+        //            Shoot();
 
-                    // «десь должен быть ваш код дл€ выстрела
-                    yield return new WaitForSeconds(delayShoot);
-                }
-                else
-                {
-                    yield return null; // ∆дем следующего кадра, если агресси€ отключена
-                }
-            }
-        }
+        //            // «десь должен быть ваш код дл€ выстрела
+        //            yield return new WaitForSeconds(delayShoot);
+        //        }
+        //        else
+        //        {
+        //            yield return null; // ∆дем следующего кадра, если агресси€ отключена
+        //        }
+        //    }
+        //}
 
     }
 

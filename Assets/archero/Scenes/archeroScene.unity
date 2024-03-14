@@ -3177,10 +3177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71a8172c1a79744d88769245e18702f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delayShoot: 2
   bulletPrefab: {fileID: 3859677103051880240, guid: 6b6b008d34972d24892faa33858b06b6, type: 3}
   shootSound: {fileID: 122279095}
-  agresion: 0
-  delayShoot: 2
+  pl: {fileID: 1408568657}
 --- !u!1 &1381566631
 GameObject:
   m_ObjectHideFlags: 0
@@ -3319,6 +3319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9733da093c4864747a9359b72e257179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  State: 0
   MoveSpeed: 3
   JumpSpeed: 15
   playerController: {fileID: 0}

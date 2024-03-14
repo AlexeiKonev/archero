@@ -4,8 +4,12 @@ using UnityEngine;
 
 namespace archhero
 {
+    public enum CharacterState { stop, walk }
+    
     public class PlayerController : MonoBehaviour
     {
+      public   CharacterState State;
+
         //Define a moving speed MoveSpeed ​​whose type is public type
         public float MoveSpeed = 3f;
         //Users can adjust it in the PlayerMove script interface
@@ -40,6 +44,8 @@ namespace archhero
         //Every frame in Updata will be executed, resulting in the inability to save the value of the previous moment   
         void Update()
         {
+
+
             //Determine whether the PlayerController is on the ground, if it is not on the ground, it cannot move forward, backward, left and right, nor can it take off
             if (playerController.isGrounded)
             {
@@ -74,6 +80,18 @@ namespace archhero
             //.Move under PlayerController is the function to realize object movement
             //Move() put a Vector3 type in the brackets, in this case Player_Move
             playerController.Move(Player_Move * Time.deltaTime);
+
+
+
+            if (horizontal == 0 && vertical == 0)
+            {
+                State = CharacterState.stop;
+            }
+            else
+            {
+                State = CharacterState.walk;
+            }
         }
+
     }
 }

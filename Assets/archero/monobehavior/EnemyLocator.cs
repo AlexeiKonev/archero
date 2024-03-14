@@ -6,7 +6,7 @@ namespace archhero
 {
     public class EnemyLocator : MonoBehaviour
     {
-       [SerializeField] private GunEnemy gun;
+       [SerializeField] private Gun gun;
        [SerializeField] private Transform enemyTransform;
 
        [SerializeField] private Transform playerTransform;

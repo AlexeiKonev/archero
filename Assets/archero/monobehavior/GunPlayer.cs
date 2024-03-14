@@ -10,40 +10,40 @@ namespace archhero
 {
     public class GunPlayer : Gun
     {
-
+        public PlayerController pl;
         //[SerializeField]
         //private float delayShoot = 2f;
 
 
-        //public override void Awake()
-        //{
-        //    StartCoroutine(ShootCoroutine());
-        //}
+        public   void Awake()
+        {
+            StartCoroutine(ShootCoroutine());
+        }
 
         //public override void SetAgresion(bool value)
         //{
         //    agresion = value;
         //}
 
-        //IEnumerator ShootCoroutine()
-        //{
-        //    while (true)
-        //    {
-        //        if (agresion)
-        //        {
-        //            Debug.Log("GunPlayer");
-        //            Shoot();
+        private IEnumerator  ShootCoroutine()
+        {
+            while (true)
+            {
+                if (agresion && pl.State== CharacterState.stop)
+                {
+                    Debug.Log("GunPlayer");
+                    Shoot();
 
-        //            // «десь должен быть ваш код дл€ выстрела
-        //            yield return new WaitForSeconds(delayShoot);
-        //        }
-        //        else
-        //        {
-        //            yield return null; // ∆дем следующего кадра, если агресси€ отключена
-        //        }
-        //    }
-        //}
-       
+                    // «десь должен быть ваш код дл€ выстрела
+                    yield return new WaitForSeconds(delayShoot);
+                }
+                else
+                {
+                    yield return null; // ∆дем следующего кадра, если агресси€ отключена
+                }
+            }
+        }
+
     }
 
 
