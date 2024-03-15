@@ -1,6 +1,6 @@
 ﻿namespace archhero
 {
-    public interface IDamageable
+    public interface ITakeDamageable
     {
         void TakeDamage(int damage);
     }
