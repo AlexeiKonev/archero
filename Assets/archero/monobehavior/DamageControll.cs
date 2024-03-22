@@ -44,7 +44,30 @@ namespace archhero
             }
 
 
+            
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Bullet"))
+            {
+                GameObject bullet = other.gameObject;
 
+                bulleto = bullet.GetComponent<IDamage>();
+
+                int damage = bulleto.Damage();
+
+                if (health > 0)
+                {
+                    TakeDamage(damage);
+
+                    Debug.Log("damaged");
+
+                }
+                else if (health < 0)
+                {
+                    Destroy(this.gameObject);
+                }
+            }
         }
     }
 }
